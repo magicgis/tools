@@ -2,8 +2,8 @@
 
 ## Featuers
 
-### Two way binder
-* sync to form data values
+### Two-Way Binder
+* sync with form data values
 
 ### Column Designer
 
