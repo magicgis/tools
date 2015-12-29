@@ -2,6 +2,9 @@
 
 ## Featuers
 
+### Two way binder
+* sync to form data values
+
 ### Column Designer
 
 ### Style Designer
