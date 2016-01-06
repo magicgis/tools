@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>two way binding</title>
+<style>
+.bindCls table td,.bindCls table th {
+	padding: 5px;
+	border : 1px solid black;
+}
+.bindCls table {
+	border-collapse: collapse;
+}
+</style>
+<link href="js/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="lib/realgridjs-lic.js"></script>
+<script type="text/javascript" src="lib/realgridjs_eval.1.0.13.min.js"></script>
+<script type="text/javascript" src="lib/realgridjs-api.1.0.13.js"></script>
+<script type="text/javascript" src="lib/realgridjs-twoway.1.0.13.js"></script>
+<script type="text/javascript" src="lib/jszip.min.js"></script>
+<script>
+	// data
+	var jArr = [{"Check":"True","OrderID":"10248","CustomerID":"VINET","EmployeeID":"5","OrderDate":"1996/07/04","CompanyName":"Vins et alcools Chevalier\r\n","Country":"France","Phone":"26.47.15.10","ProductName":"Queso Cabrales","QuantityPerUnit":"1 kg pkg.","Quantity":1200,"UnitPrice":14},{"Check":"True","OrderID":"10248","CustomerID":"VINET","EmployeeID":"5","OrderDate":"1996/07/04","CompanyName":"Vins et alcools Chevalier\r\n","Country":"France","Phone":"26.47.15.10","ProductName":"Singaporean Hokkien Fried Mee","QuantityPerUnit":"32 - 1 kg pkgs.","Quantity":10,"UnitPrice":9.8},{"Check":"True","OrderID":"10248","CustomerID":"VINET","EmployeeID":"5","OrderDate":"1996/07/04","CompanyName":"Vins et alcools Chevalier\r\n","Country":"France","Phone":"26.47.15.10","ProductName":"Mozzarella di Giovanni","QuantityPerUnit":"24 - 200 g pkgs.","Quantity":5,"UnitPrice":34.8},{"Check":"True","OrderID":"10249","CustomerID":"TOMSP","EmployeeID":"6","OrderDate":"1996/07/05","CompanyName":"Toms Spezialitäten","Country":"Germany","Phone":"0251-031259","ProductName":"Tofu","QuantityPerUnit":"40 - 100 g pkgs.","Quantity":9,"UnitPrice":18.6},{"Check":"True","OrderID":"10249","CustomerID":"TOMSP","EmployeeID":"6","OrderDate":"1996/07/05","CompanyName":"Toms Spezialitäten","Country":"Germany","Phone":"0251-031259","ProductName":"Manjimup Dried Apples","QuantityPerUnit":"50 - 300 g pkgs.","Quantity":1004,"UnitPrice":42.4},{"Check":"False","OrderID":"10250","CustomerID":"HANAR","EmployeeID":"4","OrderDate":"1996/07/08","CompanyName":"Hanari Carnes","Country":"Brazil","Phone":"(21) 555-0091","ProductName":"Jack's New England Clam Chowder","QuantityPerUnit":"12 - 12 oz cans","Quantity":10,"UnitPrice":7.7},{"Check":"False","OrderID":"10250","CustomerID":"HANAR","EmployeeID":"4","OrderDate":"1996/07/08","CompanyName":"Hanari Carnes","Country":"Brazil","Phone":"(21) 555-0091","ProductName":"Manjimup Dried Apples","QuantityPerUnit":"50 - 300 g pkgs.","Quantity":35,"UnitPrice":42.4},{"Check":"False","OrderID":"10250","CustomerID":"HANAR","EmployeeID":"4","OrderDate":"1996/07/08","CompanyName":"Hanari Carnes","Country":"Brazil","Phone":"(21) 555-0091","ProductName":"Louisiana Fiery Hot Pepper Sauce","QuantityPerUnit":"32 - 8 oz bottles","Quantity":15,"UnitPrice":16.8},{"Check":"True","OrderID":"10251","CustomerID":"VICTE","EmployeeID":"3","OrderDate":"1996/07/08","CompanyName":"Victuailles en stock","Country":"France","Phone":"78.32.54.86","ProductName":"Gustaf's Knäckebröd","QuantityPerUnit":"24 - 500 g pkgs.","Quantity":6,"UnitPrice":16.8},{"Check":"False","OrderID":"10251","CustomerID":"VICTE","EmployeeID":"3","OrderDate":"1996/07/08","CompanyName":"Victuailles en stock","Country":"France","Phone":"78.32.54.86","ProductName":"Ravioli Angelo","QuantityPerUnit":"24 - 250 g pkgs.","Quantity":15,"UnitPrice":15.6},{"Check":"False","OrderID":"10251","CustomerID":"VICTE","EmployeeID":"3","OrderDate":"1996/07/08","CompanyName":"Victuailles en stock","Country":"France","Phone":"78.32.54.86","ProductName":"Louisiana Fiery Hot Pepper Sauce","QuantityPerUnit":"32 - 8 oz bottles","Quantity":20,"UnitPrice":16.8},{"Check":"True","OrderID":"10252","CustomerID":"SUPRD","EmployeeID":"4","OrderDate":"1996/07/09","CompanyName":"Suprêmes délices","Country":"Belgium","Phone":"(071) 23 67 22 20","ProductName":"Sir Rodney's Marmalade","QuantityPerUnit":"30 gift boxes","Quantity":40,"UnitPrice":64.8},{"Check":"True","OrderID":"10252","CustomerID":"SUPRD","EmployeeID":"4","OrderDate":"1996/07/09","CompanyName":"Suprêmes délices","Country":"Belgium","Phone":"(071) 23 67 22 20","ProductName":"Geitost","QuantityPerUnit":"500 g","Quantity":25,"UnitPrice":2},{"Check":"True","OrderID":"10252","CustomerID":"SUPRD","EmployeeID":"4","OrderDate":"1996/07/09","CompanyName":"Suprêmes délices","Country":"Belgium","Phone":"(071) 23 67 22 20","ProductName":"Camembert Pierrot","QuantityPerUnit":"15 - 300 g rounds","Quantity":40,"UnitPrice":27.2},{"Check":"True","OrderID":"10253","CustomerID":"HANAR","EmployeeID":"3","OrderDate":"1996/07/10","CompanyName":"Hanari Carnes","Country":"Brazil","Phone":"(21) 555-0091","ProductName":"Gorgonzola Telino","QuantityPerUnit":"12 - 100 g pkgs","Quantity":20,"UnitPrice":10},{"Check":"False","OrderID":"10253","CustomerID":"HANAR","EmployeeID":"3","OrderDate":"1996/07/10","CompanyName":"Hanari Carnes","Country":"Brazil","Phone":"(21) 555-0091","ProductName":"Chartreuse verte","QuantityPerUnit":"750 cc per bottle","Quantity":42,"UnitPrice":14.4},{"Check":"True","OrderID":"10253","CustomerID":"HANAR","EmployeeID":"3","OrderDate":"1996/07/10","CompanyName":"Hanari Carnes","Country":"Brazil","Phone":"(21) 555-0091","ProductName":"Maxilaku","QuantityPerUnit":"24 - 50 g pkgs.","Quantity":40,"UnitPrice":16},{"Check":"True","OrderID":"10254","CustomerID":"CHOPS","EmployeeID":"5","OrderDate":"1996/07/11","CompanyName":"Chop-suey Chinese","Country":"Switzerland","Phone":"0452-076545","ProductName":"Guaraná Fantástica","QuantityPerUnit":"12 - 355 ml cans","Quantity":15,"UnitPrice":3.6},{"Check":"True","OrderID":"10254","CustomerID":"CHOPS","EmployeeID":"5","OrderDate":"1996/07/11","CompanyName":"Chop-suey Chinese","Country":"Switzerland","Phone":"0452-076545","ProductName":"Pâté chinois","QuantityPerUnit":"24 boxes x 2 pies","Quantity":21,"UnitPrice":19.2},{"Check":"False","OrderID":"10254","CustomerID":"CHOPS","EmployeeID":"5","OrderDate":"1996/07/11","CompanyName":"Chop-suey Chinese","Country":"Switzerland","Phone":"0452-076545","ProductName":"Longlife Tofu","QuantityPerUnit":"5 kg pkg.","Quantity":21,"UnitPrice":8},{"Check":"True","OrderID":"10255","CustomerID":"RICSU","EmployeeID":"9","OrderDate":"1996/07/12","CompanyName":"Richter Supermarkt","Country":"Switzerland","Phone":"0897-034214","ProductName":"Chang","QuantityPerUnit":"24 - 12 oz bottles","Quantity":20,"UnitPrice":15.2},{"Check":"True","OrderID":"10255","CustomerID":"RICSU","EmployeeID":"9","OrderDate":"1996/07/12","CompanyName":"Richter Supermarkt","Country":"Switzerland","Phone":"0897-034214","ProductName":"Pavlova","QuantityPerUnit":"32 - 500 g boxes","Quantity":35,"UnitPrice":13.9},{"Check":"False","OrderID":"10255","CustomerID":"RICSU","EmployeeID":"9","OrderDate":"1996/07/12","CompanyName":"Richter Supermarkt","Country":"Switzerland","Phone":"0897-034214","ProductName":"Inlagd Sill","QuantityPerUnit":"24 - 250 g  jars","Quantity":25,"UnitPrice":15.2},{"Check":"False","OrderID":"10255","CustomerID":"RICSU","EmployeeID":"9","OrderDate":"1996/07/12","CompanyName":"Richter Supermarkt","Country":"Switzerland","Phone":"0897-034214","ProductName":"Raclette Courdavault","QuantityPerUnit":"5 kg pkg.","Quantity":30,"UnitPrice":44},{"Check":"False","OrderID":"10256","CustomerID":"WELLI","EmployeeID":"3","OrderDate":"1996/07/15","CompanyName":"Wellington Importadora","Country":"Brazil","Phone":"(14) 555-8122","ProductName":"Perth Pasties","QuantityPerUnit":"48 pieces","Quantity":15,"UnitPrice":26.2},{"Check":"True","OrderID":"10256","CustomerID":"WELLI","EmployeeID":"3","OrderDate":"1996/07/15","CompanyName":"Wellington Importadora","Country":"Brazil","Phone":"(14) 555-8122","ProductName":"Original Frankfurter grüne Soße","QuantityPerUnit":"12 boxes","Quantity":12,"UnitPrice":10.4},{"Check":"False","OrderID":"10257","CustomerID":"HILAA","EmployeeID":"4","OrderDate":"1996/07/16","CompanyName":"HILARION-Abastos","Country":"Venezuela","Phone":"(5) 555-1340","ProductName":"Schoggi Schokolade","QuantityPerUnit":"100 - 100 g pieces","Quantity":25,"UnitPrice":35.1},{"Check":"True","OrderID":"10257","CustomerID":"HILAA","EmployeeID":"4","OrderDate":"1996/07/16","CompanyName":"HILARION-Abastos","Country":"Venezuela","Phone":"(5) 555-1340","ProductName":"Chartreuse verte","QuantityPerUnit":"750 cc per bottle","Quantity":6,"UnitPrice":14.4},{"Check":"False","OrderID":"10257","CustomerID":"HILAA","EmployeeID":"4","OrderDate":"1996/07/16","CompanyName":"HILARION-Abastos","Country":"Venezuela","Phone":"(5) 555-1340","ProductName":"Original Frankfurter grüne Soße","QuantityPerUnit":"12 boxes","Quantity":15,"UnitPrice":10.4},{"Check":"True","OrderID":"10258","CustomerID":"ERNSH","EmployeeID":"1","OrderDate":"1996/07/17","CompanyName":"Ernst Handel","Country":"Austria","Phone":"7675-3425","ProductName":"Chang","QuantityPerUnit":"24 - 12 oz bottles","Quantity":50,"UnitPrice":15.2},{"Check":"True","OrderID":"10258","CustomerID":"ERNSH","EmployeeID":"1","OrderDate":"1996/07/17","CompanyName":"Ernst Handel","Country":"Austria","Phone":"7675-3425","ProductName":"Chef Anton's Gumbo Mix","QuantityPerUnit":"36 boxes","Quantity":65,"UnitPrice":17}];
+	
+	var gridView, dataProvider;
+	
+	$(function() {
+		$("#datepicker").datepicker({
+			showOn : "button",
+			buttonText : "달력",
+			dateFormat : "yy/mm/dd"
+		});
+		
+		RealGridJS.setRootContext("lib");
+		gridView = new RealGridJS.GridView("realgrid");
+		dataProvider = new RealGridJS.LocalDataProvider();
+		gridView.setDataSource(dataProvider);
+
+		setFields(dataProvider);
+		setColumns(gridView);
+		
+		gridView.setOptions({
+			edit : {
+				insertable : true,
+				appendable : true,
+				deletable : true
+			}
+		});
+		
+		rgBind = new RealGridFormBinder();
+		rgBind.bindForm(gridView,dataProvider,"bindForm");
+		setEvent(gridView, dataProvider);
+		
+		dataProvider.fillJsonData(jArr);
+		$("#gridVer").text(RealGridJS.getVersion());
+		
+		gridView.setFocus();
+	});
+	
+	function setFields(provider) {
+	    fields = [{
+	        fieldName : "Check"
+	    }, {
+	        fieldName : "OrderID",
+	        dataType : "text"
+	    }, {
+	        fieldName : "CustomerID"
+	    }, {
+	        fieldName : "EmployeeID"
+	    }, {
+	        fieldName : "OrderDate",
+	        dataType : "datetime"
+	    }, {
+	        fieldName : "CompanyName"
+	    }, {
+	        fieldName : "Country"
+	    }, {
+	        fieldName : "Phone"
+	    }, {
+	        fieldName : "ProductName"
+	    }, {
+	        fieldName : "QuantityPerUnit"
+	    }, {
+	        fieldName : "Quantity",
+	        dataType : "number"
+	    }, {
+	        fieldName : "UnitPrice",
+	        dataType : "number"
+	    }];
+	 
+	    provider.setFields(fields);
+	}
+
+	function setColumns(grid) {
+	    var columns = [{
+	    	name : "Check",
+	    	fieldName : "Check",
+	    	editable : false,
+	        renderer : {
+	            type : "check",
+	            editable : true,
+	            startEditOnClick : true,
+	            trueValues : "True",
+	            falseValues : "False",
+	            labelPosition : "right"
+	        }
+	    }, {
+	        name : "OrderID",
+	        fieldName : "OrderID",
+	        width : "90",
+	        styles : {
+	            textAlignment : "center",
+	            numberFormat : "#,##0"
+	        },
+	        textInputCase : "upper",
+	        readOnly : true
+	    }, {
+	        name : "CustomerID",
+	        fieldName : "CustomerID",
+	        width : "150",
+	        sortable : false,
+	        lookupDisplay : true,
+	        values : ["VINET", "HANAR", "SUPRD", "VICTE", "THREE", "SEVEN"],
+	        labels : ["<VINET>", "<HANAR>", "<SUPRD>", "<VICTE>", "<THREE>", "<SEVEN>"],
+	        editor : {
+	            type : "dropDown",
+	            dropDownCount : 4
+	        },
+	        styles : {
+	            textAlignment : "center"
+	        },
+	        header : {
+	            styles : {
+	                background : "linear,#22ffd500,#ffffd500,90"
+	            }
+	        }
+	    }, {
+	        name : "CustomerID2",
+	        fieldName : "CustomerID",
+	        width : "150",
+	        sortable : false,
+	        editor : {
+	            type : "dropDown",
+	            dropDownCount : 4,
+	            domainOnly : true,
+	            values : ["VINET", "HANAR", "SUPRD", "VICTE", "THREE", "SEVEN"],
+	            labels : ["<VINET>", "<HANAR>", "<SUPRD>", "<VICTE>", "<THREE>", "<SEVEN>"]
+	        },
+	        styles : {
+	            textAlignment : "center"
+	        },
+	        header : {
+	            styles : {
+	                background : "linear,#22ffd500,#ffffd500,90"
+	            }
+	        }
+	    }, {
+	        name : "CustomerID3",
+	        fieldName : "CustomerID",
+	        width : "150",
+	        sortable : false,
+	        editor : {
+	            type : "search",
+	            searchLength : 1,  
+	            searchDelay : 1000,
+	            useCtrlEnterKey : true,
+	            useEnterKey : true
+	        },
+	        styles : {
+	            textAlignment : "center"
+	        },
+	        header : {
+	            styles : {
+	                background : "linear,#22ffd500,#ffffd500,90"
+	            }
+	        }
+	    }, {
+	        name : "OrderDate",
+	        fieldName : "OrderDate",
+	        width : "180",
+	        sortable : false,
+	        editor : {
+	            type : "date",
+	            datetimeFormat : "yyyyMMdd",
+	            yearNavigation : true
+	        },
+	        header : {
+	            styles : {
+	                background : "linear,#22ffd500,#ffffd500,90"
+	            }
+	        }
+	    }, {
+	        name : "Quantity",
+	        fieldName : "Quantity",
+	        width : "100",
+	        sortable : false,
+	        editor : {
+	            type : "number"
+	        },
+	        styles : {
+	            textAlignment : "far",
+	            numberFormat : "#,000"
+	        },
+	        header : {
+	            styles : {
+	                background : "linear,#22ffd500,#ffffd500,90"
+	            }
+	        }
+	    }, {
+	        name : "CompanyName",
+	        fieldName : "CompanyName",
+	        width : "200",
+	        editor : {
+	            type : "multiline",
+	            textCase : "upper"
+	        },
+	        styles : {
+	            textAlignment : "near",
+	            textWrap: "explicit" // js버전에만 적용.
+	        },
+	        header : {
+	            styles : {
+	                background : "linear,#22ffd500,#ffffd500,90"
+	            }
+	        }
+	    }, {
+	        name : "Country",
+	        fieldName : "Country",
+	        width : "100",
+	        styles : {
+	            textAlignment : "center"
+	        },
+	        header : {
+	        }
+	    },{
+	        name : "Phone",
+	        fieldName : "Phone",
+	        width : "100",
+	        styles : {
+	            textAlignment : "near"
+	        },
+	        header : {
+	        }
+	    }, {
+	        name : "ProductName",
+	        fieldName : "ProductName",
+	        width : "200",
+	        styles : {
+	            textAlignment : "near"
+	        },
+	        header : {
+	        },
+	        editor : {
+	        	type : "multiline"
+	        }
+	    }];
+	 
+	    grid.setColumns(columns);
+	}
+	
+	function setEvent(grid, provider){
+		/*
+		아래 이벤트 함수는 binder에서 사용.
+		grid.onCurrentRowChanged
+		grid.onCurrentChanging
+		grid.onEditChange
+		grid.onEditCanceled
+		grid.onEditRowChanged
+		grid.onKeyDown
+		grid.onKeyUp
+		*/
+		
+		grid.onEditChange = function(grid, index, value){
+			//재정의 해도 무관하게 동작도록 apply.
+			rgBind.onEditChange.apply(rgBind, arguments);
+			console.log("dev onEditChange");
+		}
+		
+		var CustomerNames = ["ALFKI", "ANATR", "ANTON", "AROUT", "BERGS", "BLAUS", "BLONP", "BOLID", "BONAP", "BOTTM", "BSBEV", "CACTU", "CENTC", "CHOPS", "COMMI", "CONSH", "DRACD", "DUMON", "EASTC", "ERNSH", "FAMIA", "FISSA", "FOLIG", "FOLKO", "FRANK", "FRANR", "FRANS", "FURIB", "GALED", "GODOS", "GOURL", "GREAL", "GROSR", "HANAR", "HILAA", "HUNGC", "HUNGO", "ISLAT", "KOENE", "LACOR", "LAMAI", "LAUGB", "LAZYK", "LEHMS", "LETSS", "LILAS", "LINOD", "LONEP", "MAGAA", "MAISD", "MEREP", "MORGK", "NORTS", "OCEAN", "OLDWO", "OTTIK", "PARIS", "PERIC", "PICCO", "PRINI", "QUEDE", "QUEEN", "QUICK", "RANCH", "RATTC", "REGGC", "RICAR", "RICSU", "ROMEY", "SANTG", "SAVEA", "SEVES", "SIMOB", "SPECD", "SPLIR", "SUPRD", "THEBI", "THECR", "TOMSP", "TORTU", "TRADH", "TRAIH", "VAFFE", "VICTE", "VINET", "WANDK", "WARTH", "WELLI", "WHITC", "WILMK", "WOLZA"];
+	    gridView.onEditSearch = function (grid, index, text) {
+	        console.log("onEditSearch:" + index.itemIndex + "," + index.column + ", " + text);
+	        var items = CustomerNames.filter(function (str) {
+	            return str.indexOf(text) == 0;
+	        });
+	        console.log(items);
+	        grid.fillEditSearchItems(index.column, text, items);
+	    };
+	}
+	
+</script>
+</head>
+<body>
+	<div id="gridVer"></div>
+	<div class="bindCls" >
+		<form id="bindForm" >
+			<table>
+				<tr>
+					<th>Check</th>
+					<td>
+						<input type="checkBox" rgField="Check" />
+					</td>
+					<th>OrderID</th>
+					<td>
+						<input type="text" rgField="OrderID" readonly/>
+					</td>
+					<th>CustomerID</th>
+					<td>
+						<select rgField="CustomerID" >
+							<option value="VINET" > &lt;VINET&gt; </option>
+							<option value="HANAR" > &lt;HANAR&gt; </option>
+							<option value="SUPRD" > &lt;SUPRD&gt; </option>
+							<option value="VICTE" > &lt;VICTE&gt; </option>
+							<option value="THREE" > &lt;THREE&gt; </option>
+							<option value="SEVEN" > &lt;SEVEN&gt; </option>
+						</select>
+					</td>
+					<th>OrderDate</th>
+					<td>
+						<input type="text" rgField="OrderDate" id="datepicker"/>
+					</td>
+					<th>Quantity</th>
+					<td>
+						<input type="number" rgField="Quantity" />
+					</td>
+				</tr>
+				<tr>
+					<th>CompanyName</th>
+					<td>
+						<input type="text" rgField="CompanyName" />
+					</td>
+					<th>Country</th>
+					<td>
+						<input type="text" rgField="Country" />
+					</td>
+					<th>Phone</th>
+					<td>
+						<input type="text" rgField="Phone" />
+					</td>
+					<th>ProductName</th>
+					<td colspan="3">
+						<textarea rgField="ProductName" style="width : 360px;" ></textarea>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id="realgrid" style="width: 1213px; height: 500px; margin-top: 20px;"></div>
+</body>
+</html>
