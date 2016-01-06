@@ -1,3 +1,8 @@
+/*!
+* RealGridJS Two-Way Binding v0.7
+* 2016/01/06 yoogi82@wrw.kr
+*/
+
 var RealGridFormBinder = function (){
 	var rgFields = null;
 	var formFields = null;
@@ -15,7 +20,7 @@ var RealGridFormBinder = function (){
 			_gv : gv , 
 			_dp : dp, 
 			_options : {
-				_dateFormat : { datetimeFormat : "yyyy/MM/dd" } // input text box date format 
+				_dateFormat : { datetimeFormat : "yyyy/MM/dd" } // input text box에 해당 포멧으로 값지정
 			} 
 		};
 		
@@ -46,13 +51,6 @@ var RealGridFormBinder = function (){
 		gv.onEditRowChanged = onEditRowChanged;
 		gv.onKeyDown = onKeyDown;
 		gv.onKeyUp = onKeyUp;
-					
-// 			gv.onEditChange = function(grid, index, value){
-// 				this.onEditChange.apply(this, arguments);
-// 			}
-
-		
-		
 	}
 	
 	///// private function ////////////////////
@@ -69,12 +67,30 @@ var RealGridFormBinder = function (){
 		var renderer = grid.getColumnProperty(col, "renderer");
 		if(renderer && renderer.type === "check"){
 			$changeChk(grid, elt, renderer);
+		}else if(col.values.length > 0 && elt.tagName == "SELECT"){
+			fillSltOpt(col, elt);
+			$changeTxt(grid, elt, col);
 		}else{
-			$changeTxt(grid, elt);
+			$changeTxt(grid, elt, col);
 		}
 		
 		$keyup(grid, elt);
 		$keydown(grid, elt);
+	}
+	
+	function fillSltOpt(col, elt){
+		var options = "";
+		for(var i=0; i < col.values.length; i++){
+			var option = "<option value='";
+			option += col.values[i];
+			option += "' >";
+			var label = col.labels.length > 0 ? col.labels[i] : col.values[i];
+			option += label.replace(/\</gi, "&lt;").replace(/\>/gi, "&gt;");
+			option += "</option>";
+			options += option;
+		}
+		
+		elt.innerHTML = options;
 	}
 	
 	function $changeChk(grid, elt, renderer){
@@ -115,7 +131,6 @@ var RealGridFormBinder = function (){
 	}
 	
 	////// event function //////
-	
 	// 편집 중 캔슬
 	var onEditCanceled = function(grid, index){
 		var $elt = _rg.getBoundElt();
@@ -186,7 +201,6 @@ var RealGridFormBinder = function (){
 	}
 	
 	//////public function //////
-	
 	// cellindex
 	var getFocusIndex = function(){
 		return _rg.focusIndex;
@@ -280,8 +294,8 @@ var RealGridFormBinder = function (){
 	}
 };
 
-//date format util	
-// date형식으로 이벤트 함수에 넘어온 값의 포멧을 바꾸기 위한 코드
+//-------date format util	
+// date형식으로 이벤트 함수에 넘어온 값의 포멧을 지정하기 위한 코드
 String.prototype.rgstr = function(len){var s = '', i = 0; while (i++ < len) { s += this; } return s;};
 String.prototype.rgzf = function(len){return "0".rgstr(len - this.length) + this;};
 Number.prototype.rgzf = function(len){return this.toString().rgzf(len);};
@@ -307,4 +321,4 @@ Date.prototype.rgformat = function(f) {
         }
     });
 };
-//date end
+//-------date end

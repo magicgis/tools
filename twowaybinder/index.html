@@ -18,7 +18,7 @@
 <script type="text/javascript" src="lib/realgridjs-lic.js"></script>
 <script type="text/javascript" src="lib/realgridjs_eval.1.0.13.min.js"></script>
 <script type="text/javascript" src="lib/realgridjs-api.1.0.13.js"></script>
-<script type="text/javascript" src="lib/realgridjs-twoway.1.0.13.js"></script>
+<script type="text/javascript" src="lib/realgridjs-twoway.js"></script>
 <script type="text/javascript" src="lib/jszip.min.js"></script>
 <script>
 	// data
@@ -30,7 +30,10 @@
 		$("#datepicker").datepicker({
 			showOn : "button",
 			buttonText : "달력",
-			dateFormat : "yy/mm/dd"
+			dateFormat : "yy/mm/dd",
+			beforeShow : function(input, inst){
+				gridView.commitEditor();
+			}
 		});
 		
 		RealGridJS.setRootContext("lib");
@@ -307,14 +310,7 @@
 					</td>
 					<th>CustomerID</th>
 					<td>
-						<select rgField="CustomerID" >
-							<option value="VINET" > &lt;VINET&gt; </option>
-							<option value="HANAR" > &lt;HANAR&gt; </option>
-							<option value="SUPRD" > &lt;SUPRD&gt; </option>
-							<option value="VICTE" > &lt;VICTE&gt; </option>
-							<option value="THREE" > &lt;THREE&gt; </option>
-							<option value="SEVEN" > &lt;SEVEN&gt; </option>
-						</select>
+						<select rgField="CustomerID" ></select>
 					</td>
 					<th>OrderDate</th>
 					<td>
