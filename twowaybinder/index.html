@@ -40,6 +40,7 @@
 		gridView = new RealGridJS.GridView("realgrid");
 		dataProvider = new RealGridJS.LocalDataProvider();
 		gridView.setDataSource(dataProvider);
+		rgBind = new RealGridFormBinder();
 
 		setFields(dataProvider);
 		setColumns(gridView);
@@ -52,7 +53,6 @@
 			}
 		});
 		
-		rgBind = new RealGridFormBinder();
 		rgBind.bindForm(gridView,dataProvider,"bindForm");
 		setEvent(gridView, dataProvider);
 		
@@ -125,59 +125,15 @@
 	        width : "150",
 	        sortable : false,
 	        lookupDisplay : true,
-	        values : ["VINET", "HANAR", "SUPRD", "VICTE", "THREE", "SEVEN"],
-	        labels : ["<VINET>", "<HANAR>", "<SUPRD>", "<VICTE>", "<THREE>", "<SEVEN>"],
-	        editor : {
-	            type : "dropDown",
-	            dropDownCount : 4
-	        },
-	        styles : {
-	            textAlignment : "center"
-	        },
-	        header : {
-	            styles : {
-	                background : "linear,#22ffd500,#ffffd500,90"
-	            }
-	        }
-	    }, {
-	        name : "CustomerID2",
-	        fieldName : "CustomerID",
-	        width : "150",
-	        sortable : false,
+            values : ["VINET", "HANAR", "SUPRD", "VICTE", "THREE", "SEVEN"],
+            labels : ["<VINET>", "<HANAR>", "<SUPRD>", "<VICTE>", "<THREE>", "<SEVEN>"],
 	        editor : {
 	            type : "dropDown",
 	            dropDownCount : 4,
-	            domainOnly : true,
-	            values : ["VINET", "HANAR", "SUPRD", "VICTE", "THREE", "SEVEN"],
-	            labels : ["<VINET>", "<HANAR>", "<SUPRD>", "<VICTE>", "<THREE>", "<SEVEN>"]
+	            domainOnly : true
 	        },
 	        styles : {
 	            textAlignment : "center"
-	        },
-	        header : {
-	            styles : {
-	                background : "linear,#22ffd500,#ffffd500,90"
-	            }
-	        }
-	    }, {
-	        name : "CustomerID3",
-	        fieldName : "CustomerID",
-	        width : "150",
-	        sortable : false,
-	        editor : {
-	            type : "search",
-	            searchLength : 1,  
-	            searchDelay : 1000,
-	            useCtrlEnterKey : true,
-	            useEnterKey : true
-	        },
-	        styles : {
-	            textAlignment : "center"
-	        },
-	        header : {
-	            styles : {
-	                background : "linear,#22ffd500,#ffffd500,90"
-	            }
 	        }
 	    }, {
 	        name : "OrderDate",
@@ -188,11 +144,6 @@
 	            type : "date",
 	            datetimeFormat : "yyyyMMdd",
 	            yearNavigation : true
-	        },
-	        header : {
-	            styles : {
-	                background : "linear,#22ffd500,#ffffd500,90"
-	            }
 	        }
 	    }, {
 	        name : "Quantity",
@@ -205,11 +156,6 @@
 	        styles : {
 	            textAlignment : "far",
 	            numberFormat : "#,000"
-	        },
-	        header : {
-	            styles : {
-	                background : "linear,#22ffd500,#ffffd500,90"
-	            }
 	        }
 	    }, {
 	        name : "CompanyName",
@@ -222,11 +168,6 @@
 	        styles : {
 	            textAlignment : "near",
 	            textWrap: "explicit" // js버전에만 적용.
-	        },
-	        header : {
-	            styles : {
-	                background : "linear,#22ffd500,#ffffd500,90"
-	            }
 	        }
 	    }, {
 	        name : "Country",
@@ -306,7 +247,7 @@
 					</td>
 					<th>OrderID</th>
 					<td>
-						<input type="text" rgField="OrderID" readonly/>
+						<input type="text" rgField="OrderID" />
 					</td>
 					<th>CustomerID</th>
 					<td>

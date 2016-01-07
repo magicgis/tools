@@ -1,6 +1,8 @@
 /*!
 * RealGridJS Two-Way Binding v0.7
 * 2016/01/06 yoogi82@wrw.kr
+* 
+* jQuery 1.11.1 support
 */
 
 var RealGridFormBinder = function (){
@@ -70,6 +72,8 @@ var RealGridFormBinder = function (){
 		}else if(col.values.length > 0 && elt.tagName == "SELECT"){
 			fillSltOpt(col, elt);
 			$changeTxt(grid, elt, col);
+		}else if(col.readOnly || !col.editable){
+			$(elt).prop("readonly", true);
 		}else{
 			$changeTxt(grid, elt, col);
 		}
@@ -77,6 +81,7 @@ var RealGridFormBinder = function (){
 		$keyup(grid, elt);
 		$keydown(grid, elt);
 	}
+	
 	
 	function fillSltOpt(col, elt){
 		var options = "";
