@@ -39,7 +39,7 @@ RealGridJS를 설치 할 때 realgridjs-twoway.js파일을 같이 설치합니�
 Two-Way Binding(앞으로 two-way로 지칭) 기능을 사용하기 위해서는 그리드를 셋업하는 과정에 two-way 셋업 코드를 추가해야합니다.  
 two-way 클래스를 생성 후 bindForm 함수를 호출하면 two-way 설정은 완료됩니다.  
 
-이때 주의 할 점은 DataField와 DataColumn이 생성된 후 bindForm함수를 호출해야 합니다.  
+이때 주의 할 점은 [DataField](http://help.realgrid.com/api/types/DataField/)와 [DataColumn](http://help.realgrid.com/api/types/DataColumn/)이 생성된 후 bindForm함수를 호출해야 합니다.  
 
 <pre class="prettyprint">
 RealGridJS.setRootContext("lib");
@@ -114,13 +114,13 @@ provider.setFields(fields);
 때문에 two-way에 사용한 이벤트함수를 다시 정의해서 사용하면 two-way기능이 동작하지 않게 됩니다.  
 
 > two-way에 정의된 이벤트 함수  
-> GridBase.onCurrentRowChanged  
-> GridBase.onCurrentChanging   
-> GridBase.onEditChange  
-> GridBase.onEditCanceled  
-> GridBase.onEditRowChanged  
-> GridBase.onKeyDown  
-> GridBase.onKeyUp  
+> [GridBase.onCurrentRowChanged](http://help.realgrid.com/api/GridBase/onCurrentRowChanged/)   
+> [GridBase.onCurrentChanging  ](http://help.realgrid.com/api/GridBase/onCurrentChanging/)  
+> [GridBase.onEditChange       ](http://help.realgrid.com/api/GridBase/onEditChange/)  
+> [GridBase.onEditCanceled     ](http://help.realgrid.com/api/GridBase/onEditCanceled/)  
+> [GridBase.onEditRowChanged   ](http://help.realgrid.com/api/GridBase/onEditRowChanged/)  
+> [GridBase.onKeyDown          ](http://help.realgrid.com/api/GridBase/onKeyDown/)  
+> [GridBase.onKeyUp            ](http://help.realgrid.com/api/GridBase/onKeyUp/)  
 
 위와같은 상황을 방지하기 위해 새로 정의한 이벤트 함수에 다음과 같은 코드를 추가해야 합니다.  
 
@@ -134,6 +134,5 @@ grid.onEditChange = function(grid, index, value){
 
 > [apply](https://msdn.microsoft.com/ko-kr/library/4zc42wh1.aspx)  
 > 함수를 호출하여 지정된 개체를 함수의 this 값으로 대체하고 지정된 배열을 함수의 인수로 대체합니다.  
-> two-way에 정의한 이벤트 함수에는 apply에 지정한 this 값을 사용하지 않기 때문에 다른 값을 지정하여도 무관합니다.  
 
 
