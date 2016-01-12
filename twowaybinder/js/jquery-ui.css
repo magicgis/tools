@@ -1223,3 +1223,8 @@ body .ui-tooltip {
 	filter: Alpha(Opacity=30); /* support: IE8 */
 	border-radius: 8px;
 }
+
+/* realgrid two-way */
+.ui-datepicker{ font-size: 12px; width: 185px; }
+.ui-datepicker select.ui-datepicker-month{ width:45%; font-size: 11px; }
+.ui-datepicker select.ui-datepicker-year{ width:48%; font-size: 11px; }

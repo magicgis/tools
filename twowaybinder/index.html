@@ -27,14 +27,14 @@
 	var gridView, dataProvider;
 	
 	$(function() {
-		$("#datepicker").datepicker({
-			showOn : "button",
-			buttonText : "달력",
-			dateFormat : "yy/mm/dd",
-			beforeShow : function(input, inst){
-				gridView.commitEditor();
-			}
-		});
+// 		$("#datepicker").datepicker({
+// 			showOn : "button",
+// 			buttonText : "달력",
+// 			dateFormat : "yy/mm/dd",
+// 			beforeShow : function(input, inst){
+// 				gridView.commitEditor();
+// 			}
+// 		});
 		
 		RealGridJS.setRootContext("lib");
 		gridView = new RealGridJS.GridView("realgrid");
@@ -144,6 +144,9 @@
 	            type : "date",
 	            datetimeFormat : "yyyyMMdd",
 	            yearNavigation : true
+	        },
+	        styles : {
+	        	datetimeFormat : "yyyy-MM-dd"
 	        }
 	    }, {
 	        name : "Quantity",

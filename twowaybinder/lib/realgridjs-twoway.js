@@ -22,9 +22,13 @@ var RealGridFormBinder = function (){
 			_gv : gv , 
 			_dp : dp, 
 			_options : {
-				_dateFormat : { datetimeFormat : "yyyy/MM/dd" } // input text box에 해당 포멧으로 값지정
+				_dateFormat : { datetimeFormat : "yyyy-MM-dd" } // input text box에 해당 포멧으로 값지정
 			} 
 		};
+		
+		// jquery datepicker default option setting
+		var dateFormat = "yy-mm-dd"; // [mm/dd/yy], [yy-mm-dd], [d M, y], [DD, d MM]
+		setDatepickerOptions(dateFormat);
 		
 		this._formId = formId;
 		var $formChild = findFormInAllElts(formId);
@@ -65,14 +69,29 @@ var RealGridFormBinder = function (){
 	}
 	
 	function bindGridCell(grid, elt){
-		var col = grid.columnByField($(elt).attr("rgField"));
+		var fieldName = $(elt).attr("rgField");
+		var col = grid.columnByField(fieldName);
 		var renderer = grid.getColumnProperty(col, "renderer");
+		var readOnly = !grid.getColumnProperty(col, "editable") || grid.getColumnProperty(col, "readOnly");
+		var fieldIdx = _gvdp._dp.getFieldIndex(fieldName);
+		var fieldType = _gvdp._dp.getFields()[fieldIdx].dataType;
+		var editor = grid.getColumnProperty(col, "editor");
 		if(renderer && renderer.type === "check"){
 			$changeChk(grid, elt, renderer);
 		}else if(col.values.length > 0 && elt.tagName == "SELECT"){
 			fillSltOpt(col, elt);
 			$changeTxt(grid, elt, col);
-		}else if(col.readOnly || !col.editable){
+		}else if(editor == "date" || fieldType == "datetime"){
+			if(editor == "date" ){
+				$(elt).datepicker({
+					beforeShow : function(input, inst){
+						grid.commitEditor();
+					}
+				});
+			}
+			$changeDateTxt(grid, elt, col);
+			return;
+		}else if(readOnly){
 			$(elt).prop("readonly", true);
 		}else{
 			$changeTxt(grid, elt, col);
@@ -115,6 +134,21 @@ var RealGridFormBinder = function (){
 		});
 	}
 	
+	function $changeDateTxt(grid, elt){
+		$(elt).change(function(){
+			var index = getFocusIndex();
+			grid.commitEditor();
+			grid.setValue(index.itemIndex, $(elt).attr("rgField"), this.value);
+			var redate = _gvdp._dp.getOutputRow(_gvdp._options._dateFormat, index.dataRow)[$(elt).attr("rgField")];
+			if(redate){
+				this.value = redate;
+			}else{
+				this.value = "";
+				alert("유효한 날자 형식이 아닙니다.");
+			}
+		});
+	}
+	
 	function $keyup(grid, elt){
 		$(elt).keyup(function(e){
 			var itemState = grid.getItemState();
@@ -133,6 +167,32 @@ var RealGridFormBinder = function (){
 			grid.commitEditor();
 			grid.setValue(index.itemIndex, $(elt).attr("rgField"), this.value);
 		});
+	}
+	
+	function setDatepickerOptions(dateFormat){
+		$.datepicker.regional['ko'] = { // Default regional settings
+		        closeText: '닫기',
+		        prevText: '이전달',
+		        nextText: '다음달',
+		        currentText: 'today',
+		        monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		        monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+		        dayNames: ['일','월','화','수','목','금','토'],
+		        dayNamesShort: ['일','월','화','수','목','금','토'],
+		        dayNamesMin: ['일','월','화','수','목','금','토'],
+		        weekHeader: 'Wk',
+		        dateFormat: dateFormat ? dateFormat : 'yy/mm/dd',
+		        firstDay: 0,
+		        isRTL: false,
+		        showMonthAfterYear: true,
+//		        yearSuffix: '년',
+		        showOtherMonths : true,
+		        selectOtherMonths : true,
+		        changeYear: true,
+				changeMonth: true
+    	};
+
+	    $.datepicker.setDefaults($.datepicker.regional['ko']);
 	}
 	
 	////// event function //////
