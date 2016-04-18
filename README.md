@@ -2,6 +2,8 @@
 
 ## Featuers
 
+### Builder
+
 ### Two-Way Binder
 * sync with form data values
 
@@ -11,7 +13,7 @@
 
 ### Expression Designer
 
-### Print
+### Simple Report
 
 ### Download as
 * PDF
